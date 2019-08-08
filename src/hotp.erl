@@ -26,7 +26,7 @@
 generate(Key, Counter, NbDigits) ->
   truncate(crypto:hmac(sha, Key, Counter), NbDigits).
 
-%% @doc Truncate a SHA1 HMAC and reduces it to a numeric password containing
+%% @doc Truncate a SHA1 HMAC and reduce it to a numeric password containing
 %% `NbDigits' digits.
 %%
 %% See <a href="https://tools.ietf.org/html/rfc4226#section-5.3">RFC 4226
