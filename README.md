@@ -5,7 +5,7 @@
 
 ## Introduction
 The repository contains an OTP library application which provides various
-utilies related to HOTP (HMAC-based one-time passwords) and TOTP (time-based
+utilities related to HOTP (HMAC-based one-time passwords) and TOTP (time-based
 one-time passwords).
 
 ## Build
