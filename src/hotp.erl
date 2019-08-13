@@ -21,8 +21,8 @@
 -spec generate(Key, Counter, NbDigits) -> Password when
     Key :: iodata(),
     Counter :: counter(),
-    NbDigits :: non_neg_integer(),
-    Password :: non_neg_integer().
+    NbDigits :: pos_integer(),
+    Password :: pos_integer().
 generate(Key, Counter, NbDigits) ->
   truncate(crypto:hmac(sha, Key, Counter), NbDigits).
 
@@ -33,8 +33,8 @@ generate(Key, Counter, NbDigits) ->
 %% 5.3</a>.
 -spec truncate(HMAC, NbDigits) -> Password when
     HMAC :: sha1_hmac(),
-    NbDigits :: non_neg_integer(),
-    Password :: non_neg_integer().
+    NbDigits :: pos_integer(),
+    Password :: pos_integer().
 truncate(HMAC, NbDigits) when byte_size(HMAC) == 20 ->
   Offset = binary:at(HMAC, 19) band 16#0f,
   C0 = (binary:at(HMAC, Offset) band 16#7f) bsl 24,
@@ -49,7 +49,7 @@ truncate(HMAC, NbDigits) when byte_size(HMAC) == 20 ->
 %% The function is only defined for positive integers.
 %%
 %% We do not use `math:pow' since it uses floating point numbers.
--spec pow10(non_neg_integer()) -> non_neg_integer().
+-spec pow10(non_neg_integer()) -> pos_integer().
 pow10(N) when N > 0 ->
   pow10(N, 1).
 
