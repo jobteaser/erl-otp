@@ -58,7 +58,7 @@ authenticate(Validator, ClientPassword) ->
   Counter = Validator#validator.counter,
   LookAhead = Validator#validator.look_ahead,
   NextCounters = lists:seq(Counter + 1, Counter + 1 + LookAhead),
-  Predicate = fun (CV) -> is_password_valid(Validator, ClientPassword, CV) end,
+  Predicate = fun (C) -> is_password_valid(Validator, ClientPassword, C) end,
   case lists:search(Predicate, NextCounters) of
     {value, MatchingCounter} ->
       Validator2 = Validator#validator{counter = MatchingCounter},
