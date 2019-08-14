@@ -2,25 +2,25 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Module hotp_validator</title>
+<title>Module totp_validator</title>
 <link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
 </head>
 <body bgcolor="white">
 <div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
 <hr>
 
-<h1>Module hotp_validator</h1>
+<h1>Module totp_validator</h1>
 <ul class="index"><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>
 
 
 <h2><a name="types">Data Types</a></h2>
 
 <h3 class="typedecl"><a name="type-validator">validator()</a></h3>
-<p><tt>validator() = #validator{key = binary(), counter = <a href="hotp.html#type-counter">hotp:counter()</a>, nb_digits = pos_integer(), look_ahead = non_neg_integer()}</tt></p>
+<p><tt>validator() = #validator{key = binary(), nb_digits = pos_integer(), initial_time = <a href="totp.html#type-timestamp">totp:timestamp()</a>, time_step = pos_integer(), look_behind = non_neg_integer(), look_ahead = non_neg_integer(), last_auth_time_period = <a href="totp.html#type-time_period">totp:time_period()</a> | undefined}</tt></p>
 
 
 <h3 class="typedecl"><a name="type-validator_option">validator_option()</a></h3>
-<p><tt>validator_option() = {initial_counter, <a href="hotp.html#type-counter">hotp:counter()</a>} | {nb_digits, pos_integer()} | {look_ahead, non_neg_integer()}</tt></p>
+<p><tt>validator_option() = {nb_digits, pos_integer()} | {initial_time, <a href="totp.html#type-timestamp">totp:timestamp()</a>} | {time_step, pos_integer()} | {look_behind, non_neg_integer()} | {look_ahead, non_neg_integer()}</tt></p>
 
 
 <h3 class="typedecl"><a name="type-validator_options">validator_options()</a></h3>
@@ -28,9 +28,10 @@
 
 
 <h2><a name="index">Function Index</a></h2>
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#authenticate-2">authenticate/2</a></td><td>Authenticate a client password.</td></tr>
-<tr><td valign="top"><a href="#init-1">init/1</a></td><td>Initialize and return a new HOTP validator using default settings.</td></tr>
-<tr><td valign="top"><a href="#init-2">init/2</a></td><td>Initialize and return a new HOTP validator.</td></tr>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#authenticate-2">authenticate/2</a></td><td>Authenticate a password using the current system timestamp.</td></tr>
+<tr><td valign="top"><a href="#authenticate-3">authenticate/3</a></td><td>Authenticate a password, assuming a specific current timestamp.</td></tr>
+<tr><td valign="top"><a href="#init-1">init/1</a></td><td>Initialize and return a new TOTP validator using default settings.</td></tr>
+<tr><td valign="top"><a href="#init-2">init/2</a></td><td>Initialize and return a new TOTP validator.</td></tr>
 </table>
 
 <h2><a name="functions">Function Details</a></h2>
@@ -39,22 +40,27 @@
 <div class="spec">
 <p><tt>authenticate(Validator::<a href="#type-validator">validator()</a>, Password) -&gt; {<a href="#type-validator">validator()</a>, valid | invalid}</tt>
 <ul class="definitions"><li><tt>Password = pos_integer()</tt></li></ul></p>
-</div><p><p>Authenticate a client password.</p>
- 
-  See <a href="https://tools.ietf.org/html/rfc4226#section-7.2">RFC 4226
-  7.2</a>.</p>
+</div><p>Authenticate a password using the current system timestamp.
+ </p>
+<p><b>See also:</b> <a href="#authenticate-3">authenticate/3</a>.</p>
+
+<h3 class="function"><a name="authenticate-3">authenticate/3</a></h3>
+<div class="spec">
+<p><tt>authenticate(Validator::<a href="#type-validator">validator()</a>, Password, Time) -&gt; {<a href="#type-validator">validator()</a>, valid | invalid}</tt>
+<ul class="definitions"><li><tt>Password = pos_integer()</tt></li><li><tt>Time = <a href="totp.html#type-timestamp">totp:timestamp()</a></tt></li></ul></p>
+</div><p>Authenticate a password, assuming a specific current timestamp.</p>
 
 <h3 class="function"><a name="init-1">init/1</a></h3>
 <div class="spec">
 <p><tt>init(Key::binary()) -&gt; <a href="#type-validator">validator()</a></tt><br></p>
-</div><p>Initialize and return a new HOTP validator using default settings.
+</div><p>Initialize and return a new TOTP validator using default settings.
  </p>
 <p><b>See also:</b> <a href="#init-2">init/2</a>.</p>
 
 <h3 class="function"><a name="init-2">init/2</a></h3>
 <div class="spec">
 <p><tt>init(Key::binary(), Options::<a href="#type-validator_options">validator_options()</a>) -&gt; <a href="#type-validator">validator()</a></tt><br></p>
-</div><p>Initialize and return a new HOTP validator.</p>
+</div><p>Initialize and return a new TOTP validator.</p>
 <hr>
 
 <div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>

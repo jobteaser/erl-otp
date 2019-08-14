@@ -51,14 +51,14 @@ init(Key, Options) ->
 %%
 %% See <a href="https://tools.ietf.org/html/rfc4226#section-7.2">RFC 4226
 %% 7.2</a>.
--spec authenticate(validator(), ClientPassword) ->
+-spec authenticate(validator(), Password) ->
                       {validator(), valid | invalid} when
-    ClientPassword :: pos_integer().
-authenticate(Validator, ClientPassword) ->
+    Password :: pos_integer().
+authenticate(Validator, Password) ->
   Counter = Validator#validator.counter,
   LookAhead = Validator#validator.look_ahead,
   NextCounters = lists:seq(Counter + 1, Counter + 1 + LookAhead),
-  Predicate = fun (C) -> is_password_valid(Validator, ClientPassword, C) end,
+  Predicate = fun (C) -> is_password_valid(Validator, Password, C) end,
   case lists:search(Predicate, NextCounters) of
     {value, MatchingCounter} ->
       Validator2 = Validator#validator{counter = MatchingCounter},
@@ -68,12 +68,12 @@ authenticate(Validator, ClientPassword) ->
   end.
 
 % @doc Return whether a password is valid for a specific counter or not.
--spec is_password_valid(validator(), ClientPassword, Counter) ->
+-spec is_password_valid(validator(), Password, Counter) ->
                            boolean() when
-    ClientPassword :: pos_integer(),
+    Password :: pos_integer(),
     Counter :: hotp:counter().
-is_password_valid(Validator, ClientPassword, Counter) ->
+is_password_valid(Validator, Password, Counter) ->
   Key = Validator#validator.key,
   NbDigits = Validator#validator.nb_digits,
   ServerPassword = hotp:generate(Key, Counter, NbDigits),
-  ClientPassword == ServerPassword.
+  Password == ServerPassword.

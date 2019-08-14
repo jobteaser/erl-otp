@@ -1,3 +1,4 @@
 %% encoding: UTF-8
 {application,otp}.
-{modules,[hotp,hotp_test,hotp_validator,totp,totp_test]}.
+{modules,[hotp,hotp_test,hotp_validator,hotp_validator_test,totp,totp_test,
+          totp_validator]}.
