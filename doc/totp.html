@@ -45,7 +45,7 @@
 <h3 class="function"><a name="generate-2">generate/2</a></h3>
 <div class="spec">
 <p><tt>generate(Key, NbDigits) -&gt; Password</tt>
-<ul class="definitions"><li><tt>Key = iodata()</tt></li><li><tt>NbDigits = pos_integer()</tt></li><li><tt>Password = pos_integer()</tt></li></ul></p>
+<ul class="definitions"><li><tt>Key = iodata()</tt></li><li><tt>NbDigits = pos_integer()</tt></li><li><tt>Password = non_neg_integer()</tt></li></ul></p>
 </div><p>Generate a time-based one-time password using the default parameters
   specified in <a href="https://tools.ietf.org/html/rfc6238#section-4.1">RFC
   6238 4.1</a> and the current timestamp.
@@ -55,7 +55,7 @@
 <h3 class="function"><a name="generate-3">generate/3</a></h3>
 <div class="spec">
 <p><tt>generate(Key, CurrentTime, NbDigits) -&gt; Password</tt>
-<ul class="definitions"><li><tt>Key = iodata()</tt></li><li><tt>CurrentTime = <a href="#type-timestamp">timestamp()</a></tt></li><li><tt>NbDigits = pos_integer()</tt></li><li><tt>Password = pos_integer()</tt></li></ul></p>
+<ul class="definitions"><li><tt>Key = iodata()</tt></li><li><tt>CurrentTime = <a href="#type-timestamp">timestamp()</a></tt></li><li><tt>NbDigits = pos_integer()</tt></li><li><tt>Password = non_neg_integer()</tt></li></ul></p>
 </div><p>Generate a time-based one-time password using the default parameters
   specified in <a href="https://tools.ietf.org/html/rfc6238#section-4.1">RFC
   6238 4.1</a>.
@@ -65,7 +65,7 @@
 <h3 class="function"><a name="generate-5">generate/5</a></h3>
 <div class="spec">
 <p><tt>generate(Key, InitialTime, TimeStep, CurrentTime, NbDigits) -&gt; Password</tt>
-<ul class="definitions"><li><tt>Key = iodata()</tt></li><li><tt>InitialTime = <a href="#type-timestamp">timestamp()</a></tt></li><li><tt>TimeStep = pos_integer()</tt></li><li><tt>CurrentTime = <a href="#type-timestamp">timestamp()</a></tt></li><li><tt>NbDigits = pos_integer()</tt></li><li><tt>Password = pos_integer()</tt></li></ul></p>
+<ul class="definitions"><li><tt>Key = iodata()</tt></li><li><tt>InitialTime = <a href="#type-timestamp">timestamp()</a></tt></li><li><tt>TimeStep = pos_integer()</tt></li><li><tt>CurrentTime = <a href="#type-timestamp">timestamp()</a></tt></li><li><tt>NbDigits = pos_integer()</tt></li><li><tt>Password = non_neg_integer()</tt></li></ul></p>
 </div><p><p>Generate a time-based one-time password.</p>
  
   <p><code>InitialTime</code> and <code>TimeStep</code> are the algorithm parameters designated as

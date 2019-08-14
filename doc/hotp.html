@@ -31,7 +31,7 @@
 <h3 class="function"><a name="generate-3">generate/3</a></h3>
 <div class="spec">
 <p><tt>generate(Key, Counter, NbDigits) -&gt; Password</tt>
-<ul class="definitions"><li><tt>Key = iodata()</tt></li><li><tt>Counter = <a href="#type-counter">counter()</a></tt></li><li><tt>NbDigits = pos_integer()</tt></li><li><tt>Password = pos_integer()</tt></li></ul></p>
+<ul class="definitions"><li><tt>Key = iodata()</tt></li><li><tt>Counter = <a href="#type-counter">counter()</a></tt></li><li><tt>NbDigits = pos_integer()</tt></li><li><tt>Password = non_neg_integer()</tt></li></ul></p>
 </div><p><p>Generate a HMAC-based one-time password.</p>
  
   See <a href="https://tools.ietf.org/html/rfc4226#section-5.3">RFC 4226

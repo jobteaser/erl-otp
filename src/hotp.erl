@@ -35,7 +35,7 @@
     Key :: iodata(),
     Counter :: counter(),
     NbDigits :: pos_integer(),
-    Password :: pos_integer().
+    Password :: non_neg_integer().
 generate(Key, Counter, NbDigits) ->
   truncate(crypto:hmac(sha, Key, Counter), NbDigits).
 
@@ -47,7 +47,7 @@ generate(Key, Counter, NbDigits) ->
 -spec truncate(HMAC, NbDigits) -> Password when
     HMAC :: sha1_hmac(),
     NbDigits :: pos_integer(),
-    Password :: pos_integer().
+    Password :: non_neg_integer().
 truncate(HMAC, NbDigits) when byte_size(HMAC) == 20 ->
   Offset = binary:at(HMAC, 19) band 16#0f,
   C0 = (binary:at(HMAC, Offset) band 16#7f) bsl 24,

@@ -41,7 +41,7 @@
     TimeStep :: pos_integer(),
     CurrentTime :: timestamp(),
     NbDigits :: pos_integer(),
-    Password :: pos_integer().
+    Password :: non_neg_integer().
 generate(Key, InitialTime, TimeStep, CurrentTime, NbDigits) ->
   T = trunc(math:floor((CurrentTime - InitialTime) / TimeStep)),
   Counter = <<T:64>>,
@@ -56,7 +56,7 @@ generate(Key, InitialTime, TimeStep, CurrentTime, NbDigits) ->
     Key :: iodata(),
     CurrentTime :: timestamp(),
     NbDigits :: pos_integer(),
-    Password :: pos_integer().
+    Password :: non_neg_integer().
 generate(Key, CurrentTime, NbDigits) ->
   generate(Key, 0, 30, CurrentTime, NbDigits).
 
@@ -68,7 +68,7 @@ generate(Key, CurrentTime, NbDigits) ->
 -spec generate(Key, NbDigits) -> Password when
     Key :: iodata(),
     NbDigits :: pos_integer(),
-    Password :: pos_integer().
+    Password :: non_neg_integer().
 generate(Key, NbDigits) ->
   generate(Key, current_timestamp(), NbDigits).
 
