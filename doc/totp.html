@@ -21,6 +21,9 @@
 
 <h2><a name="index">Function Index</a></h2>
 <table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#current_timestamp-0">current_timestamp/0</a></td><td>Return the current UNIX timestamp in seconds.</td></tr>
+<tr><td valign="top"><a href="#generate-2">generate/2</a></td><td>Generate a time-based one-time password using the default parameters
+  specified in <a href="https://tools.ietf.org/html/rfc6238#section-4.1">RFC
+  6238 4.1</a> and the current timestamp.</td></tr>
 <tr><td valign="top"><a href="#generate-3">generate/3</a></td><td>Generate a time-based one-time password using the default parameters
   specified in <a href="https://tools.ietf.org/html/rfc6238#section-4.1">RFC
   6238 4.1</a>.</td></tr>
@@ -38,6 +41,16 @@
   right clock is used: RFC 6238 clearly specify that the algorithm is based
   on UNIX timestamps (which has its importance, for example for leap
   seconds).</p>
+
+<h3 class="function"><a name="generate-2">generate/2</a></h3>
+<div class="spec">
+<p><tt>generate(Key, NbDigits) -&gt; Password</tt>
+<ul class="definitions"><li><tt>Key = iodata()</tt></li><li><tt>NbDigits = pos_integer()</tt></li><li><tt>Password = pos_integer()</tt></li></ul></p>
+</div><p>Generate a time-based one-time password using the default parameters
+  specified in <a href="https://tools.ietf.org/html/rfc6238#section-4.1">RFC
+  6238 4.1</a> and the current timestamp.
+ </p>
+<p><b>See also:</b> <a href="#generate-3">generate/3</a>.</p>
 
 <h3 class="function"><a name="generate-3">generate/3</a></h3>
 <div class="spec">

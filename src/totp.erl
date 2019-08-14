@@ -14,7 +14,7 @@
 
 -module(totp).
 
--export([generate/5, generate/3,
+-export([generate/5, generate/3, generate/2,
          current_timestamp/0]).
 
 -export_type([]).
@@ -58,6 +58,18 @@ generate(Key, InitialTime, TimeStep, CurrentTime, NbDigits) ->
     Password :: pos_integer().
 generate(Key, CurrentTime, NbDigits) ->
   generate(Key, 0, 30, CurrentTime, NbDigits).
+
+%% @doc Generate a time-based one-time password using the default parameters
+%% specified in <a href="https://tools.ietf.org/html/rfc6238#section-4.1">RFC
+%% 6238 4.1</a> and the current timestamp.
+%%
+%% @see generate/3
+-spec generate(Key, NbDigits) -> Password when
+    Key :: iodata(),
+    NbDigits :: pos_integer(),
+    Password :: pos_integer().
+generate(Key, NbDigits) ->
+  generate(Key, current_timestamp(), NbDigits).
 
 %% @doc Return the current UNIX timestamp in seconds.
 %%
