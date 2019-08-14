@@ -17,9 +17,10 @@
 -export([generate/5, generate/3, generate/2,
          current_timestamp/0]).
 
--export_type([]).
+-export_type([timestamp/0]).
 
 -type timestamp() :: integer().
+%% A UNIX timestamp in seconds.
 
 %% @doc Generate a time-based one-time password.
 %%
