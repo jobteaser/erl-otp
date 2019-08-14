@@ -10,10 +10,14 @@ build:
 test:
 	rebar3 eunit
 
+cover:
+	rebar3 eunit --cover
+	rebar3 cover
+
 doc:
 	rebar3 edoc
 
 clean:
 	$(RM) -r _build
 
-.PHONY: all dialyzer build test doc clean
+.PHONY: all dialyzer build test cover doc clean
