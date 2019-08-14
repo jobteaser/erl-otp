@@ -36,7 +36,7 @@
 %% 4.2</a>.
 -spec generate(Key, InitialTime, TimeStep, CurrentTime, NbDigits)
               -> Password when
-    Key :: iodata(),
+    Key :: binary(),
     InitialTime :: timestamp(),
     TimeStep :: pos_integer(),
     CurrentTime :: timestamp(),
@@ -53,7 +53,7 @@ generate(Key, InitialTime, TimeStep, CurrentTime, NbDigits) ->
 %%
 %% @see generate/5
 -spec generate(Key, CurrentTime, NbDigits) -> Password when
-    Key :: iodata(),
+    Key :: binary(),
     CurrentTime :: timestamp(),
     NbDigits :: pos_integer(),
     Password :: non_neg_integer().
@@ -66,7 +66,7 @@ generate(Key, CurrentTime, NbDigits) ->
 %%
 %% @see generate/3
 -spec generate(Key, NbDigits) -> Password when
-    Key :: iodata(),
+    Key :: binary(),
     NbDigits :: pos_integer(),
     Password :: non_neg_integer().
 generate(Key, NbDigits) ->

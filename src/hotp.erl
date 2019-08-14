@@ -32,7 +32,7 @@
 %% See <a href="https://tools.ietf.org/html/rfc4226#section-5.3">RFC 4226
 %% 5.3</a>.
 -spec generate(Key, Counter, NbDigits) -> Password when
-    Key :: iodata(),
+    Key :: binary(),
     Counter :: counter(),
     NbDigits :: pos_integer(),
     Password :: non_neg_integer().
