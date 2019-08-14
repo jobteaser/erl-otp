@@ -19,7 +19,7 @@
 generate_test() ->
   % See RFC 4226 Appendix D
   Key = <<"12345678901234567890">>,
-  Generate = fun (Count) -> hotp:generate(Key, <<Count:64>>, 6) end,
+  Generate = fun (Count) -> hotp:generate(Key, Count, 6) end,
   ?assertEqual(755224, Generate(0)),
   ?assertEqual(287082, Generate(1)),
   ?assertEqual(359152, Generate(2)),

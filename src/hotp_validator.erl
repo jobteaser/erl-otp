@@ -19,13 +19,13 @@
 -export_type([validator_options/0, validator_option/0]).
 
 -record(validator, {key :: binary(),
-                    counter_value :: hotp:counter_value(),
+                    counter :: hotp:counter(),
                     nb_digits :: pos_integer(),
                     look_ahead :: non_neg_integer()}).
 -type validator() :: #validator{}.
 
 -type validator_options() :: [validator_option()].
--type validator_option() :: {initial_counter_value, hotp:counter_value()}
+-type validator_option() :: {initial_counter, hotp:counter()}
                           | {nb_digits, pos_integer()}
                           | {look_ahead, non_neg_integer()}.
 
@@ -39,11 +39,11 @@ init(Key) ->
 %% @doc Initialize and return a new HOTP validator.
 -spec init(Key :: binary(), Options :: validator_options()) -> validator().
 init(Key, Options) ->
-  CounterValue = proplists:get_value(initial_counter_value, Options, 0),
+  Counter = proplists:get_value(initial_counter, Options, 0),
   NbDigits = proplists:get_value(nb_digits, Options, 6),
   LookAhead = proplists:get_value(look_ahead, Options, 5),
   #validator{key = Key,
-             counter_value = CounterValue,
+             counter = Counter,
              nb_digits = NbDigits,
              look_ahead = LookAhead}.
 
@@ -55,25 +55,25 @@ init(Key, Options) ->
                       {validator(), valid | invalid} when
     ClientPassword :: pos_integer().
 authenticate(Validator, ClientPassword) ->
-  CounterValue = Validator#validator.counter_value,
+  Counter = Validator#validator.counter,
   LookAhead = Validator#validator.look_ahead,
-  NextCounterValues = lists:seq(CounterValue + 1, CounterValue + 1 + LookAhead),
+  NextCounters = lists:seq(Counter + 1, Counter + 1 + LookAhead),
   Predicate = fun (CV) -> is_password_valid(Validator, ClientPassword, CV) end,
-  case lists:search(Predicate, NextCounterValues) of
-    {value, MatchingCounterValue} ->
-      Validator2 = Validator#validator{counter_value = MatchingCounterValue},
+  case lists:search(Predicate, NextCounters) of
+    {value, MatchingCounter} ->
+      Validator2 = Validator#validator{counter = MatchingCounter},
       {Validator2, valid};
     false ->
       {Validator, invalid}
   end.
 
-% @doc Return whether a password is valid for a specific counter value or not.
--spec is_password_valid(validator(), ClientPassword, CounterValue) ->
+% @doc Return whether a password is valid for a specific counter or not.
+-spec is_password_valid(validator(), ClientPassword, Counter) ->
                            boolean() when
     ClientPassword :: pos_integer(),
-    CounterValue :: hotp:counter_value().
-is_password_valid(Validator, ClientPassword, CounterValue) ->
+    Counter :: hotp:counter().
+is_password_valid(Validator, ClientPassword, Counter) ->
   Key = Validator#validator.key,
   NbDigits = Validator#validator.nb_digits,
-  ServerPassword = hotp:generate(Key, <<CounterValue:64>>, NbDigits),
+  ServerPassword = hotp:generate(Key, Counter, NbDigits),
   ClientPassword == ServerPassword.

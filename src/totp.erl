@@ -44,8 +44,7 @@
     Password :: non_neg_integer().
 generate(Key, InitialTime, TimeStep, CurrentTime, NbDigits) ->
   T = trunc(math:floor((CurrentTime - InitialTime) / TimeStep)),
-  Counter = <<T:64>>,
-  hotp:generate(Key, Counter, NbDigits).
+  hotp:generate(Key, T, NbDigits).
 
 %% @doc Generate a time-based one-time password using the default parameters
 %% specified in <a href="https://tools.ietf.org/html/rfc6238#section-4.1">RFC

@@ -16,11 +16,11 @@
 <h2><a name="types">Data Types</a></h2>
 
 <h3 class="typedecl"><a name="type-validator">validator()</a></h3>
-<p><tt>validator() = #validator{key = binary(), counter_value = <a href="hotp.html#type-counter_value">hotp:counter_value()</a>, nb_digits = pos_integer(), look_ahead = non_neg_integer()}</tt></p>
+<p><tt>validator() = #validator{key = binary(), counter = <a href="hotp.html#type-counter">hotp:counter()</a>, nb_digits = pos_integer(), look_ahead = non_neg_integer()}</tt></p>
 
 
 <h3 class="typedecl"><a name="type-validator_option">validator_option()</a></h3>
-<p><tt>validator_option() = {initial_counter_value, <a href="hotp.html#type-counter_value">hotp:counter_value()</a>} | {nb_digits, pos_integer()} | {look_ahead, non_neg_integer()}</tt></p>
+<p><tt>validator_option() = {initial_counter, <a href="hotp.html#type-counter">hotp:counter()</a>} | {nb_digits, pos_integer()} | {look_ahead, non_neg_integer()}</tt></p>
 
 
 <h3 class="typedecl"><a name="type-validator_options">validator_options()</a></h3>
