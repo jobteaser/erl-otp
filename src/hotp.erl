@@ -16,13 +16,16 @@
 
 -export([generate/3]).
 
--export_type([counter/0]).
+-export_type([counter/0, counter_value/0]).
 
 -type counter() :: <<_:64>>.
 %% A 8 byte binary counter used as moving factor.
 %%
 %% Defined in <a href="https://tools.ietf.org/html/rfc4226#section-5.1">RFC
 %% 4226 5.1</a>.
+
+-type counter_value() :: pos_integer().
+%% The numeric value of a counter.
 
 -type sha1_hmac() :: <<_:160>>.
 %% A HMAC-SHA1 binary value.
