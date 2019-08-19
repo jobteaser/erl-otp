@@ -23,5 +23,8 @@ Tests can be run with:
 ```
 
 ## Documentation
+The [handbook](doc/handbook.md) contains informations about various aspects of
+the library.
+
 Code documentation is available at
 [https://jobteaser.github.io/erl-otp/doc](https://jobteaser.github.io/erl-otp/doc).
