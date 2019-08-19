@@ -111,14 +111,5 @@ otpauth_uri(Validator, Issuer, AccountName) ->
   Key = Validator#validator.key,
   NbDigits = Validator#validator.nb_digits,
   TimeStep = Validator#validator.time_step,
-  Parameters = [{<<"secret">>, base32:encode(Key, [nopad])},
-                {<<"issuer">>, Issuer},
-                {<<"algorithm">>, <<"SHA1">>},
-                {<<"digits">>, integer_to_list(NbDigits)},
-                {<<"period">>, integer_to_list(TimeStep)}],
-  URIData = #{scheme => <<"otpauth">>,
-              host => <<"totp">>,
-              path => io_lib:format("/~s:~s", [Issuer, AccountName]),
-              query => uri_string:compose_query(Parameters,
-                                                [{encoding, utf8}])},
-  list_to_binary(uri_string:recompose(URIData)).
+  Parameters = [{<<"period">>, integer_to_list(TimeStep)}],
+  otpauth_uri:generate(totp, Key, NbDigits, Issuer, AccountName, Parameters).
