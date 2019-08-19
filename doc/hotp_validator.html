@@ -31,6 +31,8 @@
 <table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#authenticate-2">authenticate/2</a></td><td>Authenticate a client password.</td></tr>
 <tr><td valign="top"><a href="#init-1">init/1</a></td><td>Initialize and return a new HOTP validator using default settings.</td></tr>
 <tr><td valign="top"><a href="#init-2">init/2</a></td><td>Initialize and return a new HOTP validator.</td></tr>
+<tr><td valign="top"><a href="#otpauth_uri-3">otpauth_uri/3</a></td><td>Return an URI representing a validator that can be used to
+  automatically configure a client (or at least a Google authenticator).</td></tr>
 </table>
 
 <h2><a name="functions">Function Details</a></h2>
@@ -55,6 +57,15 @@
 <div class="spec">
 <p><tt>init(Key::binary(), Options::<a href="#type-validator_options">validator_options()</a>) -&gt; <a href="#type-validator">validator()</a></tt><br></p>
 </div><p>Initialize and return a new HOTP validator.</p>
+
+<h3 class="function"><a name="otpauth_uri-3">otpauth_uri/3</a></h3>
+<div class="spec">
+<p><tt>otpauth_uri(Validator::<a href="#type-validator">validator()</a>, Issuer, AccountName) -&gt; URI</tt>
+<ul class="definitions"><li><tt>Issuer = binary()</tt></li><li><tt>AccountName = binary()</tt></li><li><tt>URI = binary()</tt></li></ul></p>
+</div><p>Return an URI representing a validator that can be used to
+  automatically configure a client (or at least a Google authenticator). See
+  <a href="https://github.com/google/google-authenticator/wiki/Key-Uri-Format">the
+  Google authenticator documentation</a>.</p>
 <hr>
 
 <div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>

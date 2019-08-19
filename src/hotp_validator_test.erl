@@ -43,3 +43,11 @@ authenticate_test() ->
   ?assertEqual(invalid, Valid7),
   {_, Valid8} = hotp_validator:authenticate(Validator7, 520489),
   ?assertEqual(invalid, Valid8).
+
+otpauth_uri_test() ->
+  Key = <<"12345">>,
+  Validator = hotp_validator:init(Key, [{nb_digits, 8}]),
+  Issuer = <<"JobTeaser"/utf8>>,
+  AccountName = <<"bob@example.com"/utf8>>,
+  URI = hotp_validator:otpauth_uri(Validator, Issuer, AccountName),
+  ?assertEqual(<<"otpauth://hotp/JobTeaser:bob@example.com?secret=GEZDGNBV&issuer=JobTeaser&algorithm=SHA1&digits=8&counter=0">>, URI).

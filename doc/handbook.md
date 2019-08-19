@@ -32,3 +32,19 @@ The following validator settings are supported:
 | `time_step`    | integer   | The length of a time period in seconds.             | 30            |
 | `look_behind`  | integer   | The number of past periods to check for validity.   | 1             |
 | `look_ahead`   | integer   | The number of future periods to check for validity. | 1             |
+
+## OTP URI
+It is possible to generate OTPAUTH URI using the
+`hotp_validator:otpauth_uri/3` and `totp_validator:otpauth_uri/3`
+functions. The format of these URIs is defined in the [Google Authenticator
+documentation](https://github.com/google/google-authenticator/wiki/Key-Uri-Format).
+
+Example:
+
+```erlang
+Key = <<"Hello world">>,
+Validator = totp_validator:init(Key, [{nb_digits, 6}]),
+Issuer = <<"JobTeaser"/utf8>>,
+AccountName = <<"bob@example.com"/utf8>>,
+totp_validator:otpauth_uri(Validator, Issuer, AccountName).
+```

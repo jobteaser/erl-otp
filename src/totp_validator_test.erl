@@ -47,3 +47,11 @@ same_time_period_test() ->
   ?assertEqual(valid, Valid1),
   {_, Valid2} = totp_validator:authenticate(Validator1, 254676, 55),
   ?assertEqual(invalid, Valid2).
+
+otpauth_uri_test() ->
+  Key = <<"12345">>,
+  Validator = totp_validator:init(Key, [{nb_digits, 8}, {time_step, 60}]),
+  Issuer = <<"JobTeaser"/utf8>>,
+  AccountName = <<"bob@example.com"/utf8>>,
+  URI = totp_validator:otpauth_uri(Validator, Issuer, AccountName),
+  ?assertEqual(<<"otpauth://totp/JobTeaser:bob@example.com?secret=GEZDGNBV&issuer=JobTeaser&algorithm=SHA1&digits=8&period=60">>, URI).

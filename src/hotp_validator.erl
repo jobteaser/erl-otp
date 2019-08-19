@@ -14,7 +14,8 @@
 
 -module(hotp_validator).
 
--export([init/1, init/2, authenticate/2]).
+-export([init/1, init/2, authenticate/2,
+         otpauth_uri/3]).
 
 -export_type([validator_options/0, validator_option/0]).
 
@@ -67,7 +68,7 @@ authenticate(Validator, Password) ->
       {Validator, invalid}
   end.
 
-% @doc Return whether a password is valid for a specific counter or not.
+%% @doc Return whether a password is valid for a specific counter or not.
 -spec is_password_valid(validator(), Password, Counter) ->
                            boolean() when
     Password :: pos_integer(),
@@ -77,3 +78,28 @@ is_password_valid(Validator, Password, Counter) ->
   NbDigits = Validator#validator.nb_digits,
   ServerPassword = hotp:generate(Key, Counter, NbDigits),
   Password == ServerPassword.
+
+%% @doc Return an URI representing a validator that can be used to
+%% automatically configure a client (or at least a Google authenticator). See
+%% <a
+%% href="https://github.com/google/google-authenticator/wiki/Key-Uri-Format">the
+%% Google authenticator documentation</a>.
+-spec otpauth_uri(validator(), Issuer, AccountName) -> URI when
+    Issuer :: binary(),
+    AccountName :: binary(),
+    URI :: binary().
+otpauth_uri(Validator, Issuer, AccountName) ->
+  Key = Validator#validator.key,
+  NbDigits = Validator#validator.nb_digits,
+  Counter = Validator#validator.counter,
+  Parameters = [{<<"secret">>, base32:encode(Key, [nopad])},
+                {<<"issuer">>, Issuer},
+                {<<"algorithm">>, <<"SHA1">>},
+                {<<"digits">>, integer_to_list(NbDigits)},
+                {<<"counter">>, integer_to_list(Counter)}],
+  URIData = #{scheme => <<"otpauth">>,
+              host => <<"hotp">>,
+              path => io_lib:format("/~s:~s", [Issuer, AccountName]),
+              query => uri_string:compose_query(Parameters,
+                                                [{encoding, utf8}])},
+  list_to_binary(uri_string:recompose(URIData)).

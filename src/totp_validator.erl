@@ -14,7 +14,7 @@
 
 -module(totp_validator).
 
--export([init/1, init/2, authenticate/2, authenticate/3]).
+-export([init/1, init/2, authenticate/2, authenticate/3, otpauth_uri/3]).
 
 -record(validator, {key :: binary(),
                     nb_digits :: pos_integer(),
@@ -97,3 +97,28 @@ authenticate_with_time_period(Validator, Password, TimePeriod) ->
     false ->
       {Validator2, invalid}
   end.
+
+%% @doc Return an URI representing a validator that can be used to
+%% automatically configure a client (or at least a Google authenticator). See
+%% <a
+%% href="https://github.com/google/google-authenticator/wiki/Key-Uri-Format">the
+%% Google authenticator documentation</a>.
+-spec otpauth_uri(validator(), Issuer, AccountName) -> URI when
+    Issuer :: binary(),
+    AccountName :: binary(),
+    URI :: binary().
+otpauth_uri(Validator, Issuer, AccountName) ->
+  Key = Validator#validator.key,
+  NbDigits = Validator#validator.nb_digits,
+  TimeStep = Validator#validator.time_step,
+  Parameters = [{<<"secret">>, base32:encode(Key, [nopad])},
+                {<<"issuer">>, Issuer},
+                {<<"algorithm">>, <<"SHA1">>},
+                {<<"digits">>, integer_to_list(NbDigits)},
+                {<<"period">>, integer_to_list(TimeStep)}],
+  URIData = #{scheme => <<"otpauth">>,
+              host => <<"totp">>,
+              path => io_lib:format("/~s:~s", [Issuer, AccountName]),
+              query => uri_string:compose_query(Parameters,
+                                                [{encoding, utf8}])},
+  list_to_binary(uri_string:recompose(URIData)).
