@@ -72,38 +72,28 @@ authenticate(Validator, Password, Time) ->
   InitialTime = Validator#validator.initial_time,
   TimeStep = Validator#validator.time_step,
   TimePeriod = totp:time_period(InitialTime, TimeStep, Time),
-  authenticate_with_time_period(Validator, Password, Time, TimePeriod).
+  authenticate_with_time_period(Validator, Password, TimePeriod).
 
--spec authenticate_with_time_period(validator(), Password, Time, TimePeriod) ->
+-spec authenticate_with_time_period(validator(), Password, TimePeriod) ->
                                        {validator(), valid | invalid} when
     Password :: pos_integer(),
-    Time :: totp:timestamp(),
     TimePeriod :: totp:time_period().
-authenticate_with_time_period(Validator, _Password, _Time, TimePeriod) when
+authenticate_with_time_period(Validator, _Password, TimePeriod) when
     TimePeriod == Validator#validator.last_auth_time_period ->
   {Validator, invalid};
-authenticate_with_time_period(Validator, Password, Time, TimePeriod) ->
+authenticate_with_time_period(Validator, Password, TimePeriod) ->
+  Key = Validator#validator.key,
+  NbDigits = Validator#validator.nb_digits,
   LookBehind = Validator#validator.look_behind,
   LookAhead = Validator#validator.look_ahead,
-  Times = lists:seq(Time - LookBehind, Time + LookAhead),
-  Predicate = fun (T) -> is_password_valid(Validator, Password, T) end,
+  TimePeriodPasswords = [totp:generate_with_time_period(Key, TP, NbDigits) ||
+                          TP <- lists:seq(TimePeriod - LookBehind,
+                                          TimePeriod + LookAhead)],
+  EqualToPassword = fun (TPPassword) -> Password == TPPassword end,
   Validator2 = Validator#validator{last_auth_time_period = TimePeriod},
-  case lists:search(Predicate, Times) of
+  case lists:search(EqualToPassword, TimePeriodPasswords) of
     {value, _} ->
       {Validator2, valid};
     false ->
       {Validator2, invalid}
   end.
-
-% @doc Return whether a password is valid for a specific timestamp or not.
--spec is_password_valid(validator(), Password, Time) ->
-                           boolean() when
-    Password :: pos_integer(),
-    Time :: totp:timestamp().
-is_password_valid(Validator, Password, Time) ->
-  Key = Validator#validator.key,
-  InitialTime = Validator#validator.initial_time,
-  TimeStep = Validator#validator.time_step,
-  NbDigits = Validator#validator.nb_digits,
-  ServerPassword = totp:generate(Key, InitialTime, TimeStep, Time, NbDigits),
-  Password == ServerPassword.

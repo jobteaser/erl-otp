@@ -14,7 +14,7 @@
 
 -module(totp).
 
--export([generate/5, generate/3, generate/2,
+-export([generate/5, generate/3, generate/2, generate_with_time_period/3,
          time_period/3,
          current_timestamp/0]).
 
@@ -49,7 +49,7 @@
     Password :: non_neg_integer().
 generate(Key, InitialTime, TimeStep, Time, NbDigits) ->
   TimePeriod = time_period(InitialTime, TimeStep, Time),
-  hotp:generate(Key, TimePeriod, NbDigits).
+  generate_with_time_period(Key, TimePeriod, NbDigits).
 
 %% @doc Generate a time-based one-time password using the default parameters
 %% specified in <a href="https://tools.ietf.org/html/rfc6238#section-4.1">RFC
@@ -75,6 +75,21 @@ generate(Key, Time, NbDigits) ->
     Password :: non_neg_integer().
 generate(Key, NbDigits) ->
   generate(Key, current_timestamp(), NbDigits).
+
+%% @doc Generate a time-based one-time password using the default parameters
+%% specified in <a href="https://tools.ietf.org/html/rfc6238#section-4.1">RFC
+%% 6238 4.1</a>. The only difference with `generate/5' is that this function
+%% uses a time period directly instead of a timestamp.
+%%
+%% @see generate/5
+-spec generate_with_time_period(Key, TimePeriod, NbDigits)
+                               -> Password when
+    Key :: binary(),
+    TimePeriod :: time_period(),
+    NbDigits :: pos_integer(),
+    Password :: non_neg_integer().
+generate_with_time_period(Key, TimePeriod, NbDigits) ->
+  hotp:generate(Key, TimePeriod, NbDigits).
 
 %% @doc Return the time period a timestamp is in.
 -spec time_period(InitialTime, TimeStep, Time) -> non_neg_integer() when
