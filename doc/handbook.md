@@ -33,6 +33,20 @@ The following validator settings are supported:
 | `look_behind`  | integer   | The number of past periods to check for validity.   | 1             |
 | `look_ahead`   | integer   | The number of future periods to check for validity. | 1             |
 
+## Passwords
+While the HOTP and TOTP RFC documents clearly define one-time passwords as
+integer values, their usual representation is a character string padded with
+zero digits.
+
+The `otp:password_to_string/2` and `otp:password_to_binary/3` functions can be
+use to convert passwords to textual representations.
+
+Example:
+
+```erlang
+otp:password_to_string(totp:generate(<<"hello">>, 6), 6).
+```
+
 ## OTP URI
 It is possible to generate OTPAUTH URI using the
 `hotp_validator:otpauth_uri/3` and `totp_validator:otpauth_uri/3`
